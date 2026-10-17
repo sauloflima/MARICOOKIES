@@ -58,18 +58,29 @@ tailwind.config = {
 </style>
 <style>
   [data-carousel-slide][hidden] { display: none; }
-  [data-scare]:not([hidden]) { animation: susto .75s ease-out both; }
   [data-carousel-button][aria-pressed="true"] { background: #3B2A1D; color: #FAF5EC; }
-  @keyframes susto {
-    0% { transform: scale(.94); }
-    24% { transform: translateY(-14px) rotate(-3deg) scale(1.04); }
-    42% { transform: translateX(8px) rotate(3deg); }
-    60% { transform: translateX(-6px) rotate(-2deg); }
-    78% { transform: translateX(3px) rotate(1deg); }
-    100% { transform: none; }
+  .sweet-surprise { margin: 0; }
+  .sweet-surprise:not([hidden]) .surprise-photo { animation: sweet-arrival 1.2s cubic-bezier(.22,1,.36,1) both; }
+  .surprise-photo { position: absolute; inset: 2rem 0 7rem; width: 100%; height: calc(100% - 9rem); object-fit: contain; }
+  .surprise-caption { position: absolute; bottom: 5.5rem; left: 1rem; right: 1rem; text-align: center; color: #6B4F35; font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(1.25rem, 2vw, 1.75rem); font-style: italic; }
+  .surprise-heart { position: absolute; z-index: 1; top: 30%; left: 16%; color: #B2885A; font-size: 1.5rem; opacity: 0; pointer-events: none; }
+  .surprise-heart:nth-of-type(2) { top: 20%; left: auto; right: 14%; font-size: 2rem; animation-delay: .35s; }
+  .surprise-heart:nth-of-type(3) { top: 55%; left: auto; right: 10%; animation-delay: .7s; }
+  .sweet-surprise:not([hidden]) .surprise-heart { animation: sweet-heart 1.35s ease-out 2 both; }
+  @keyframes sweet-arrival {
+    from { opacity: 0; transform: translateY(16px) scale(.96) rotate(-2deg); }
+    65% { opacity: 1; transform: translateY(-3px) scale(1.01) rotate(1deg); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes sweet-heart {
+    0% { opacity: 0; transform: translateY(12px) scale(.7); }
+    35% { opacity: .8; }
+    100% { opacity: 0; transform: translateY(-32px) scale(1.1); }
   }
   @media (prefers-reduced-motion: reduce) {
-    [data-scare]:not([hidden]) { animation: none; }
+    .sweet-surprise:not([hidden]) .surprise-photo,
+    .sweet-surprise:not([hidden]) .surprise-heart { animation: none; }
+    .surprise-heart { display: none; }
   }
 </style>
 </head>
@@ -162,18 +173,23 @@ tailwind.config = {
     <!-- carrossel ao lado da apresentação da Mari's -->
     <div class="relative min-h-[58svh] overflow-hidden bg-sand lg:min-h-0" role="region" aria-roledescription="carrossel" aria-label="Cookies e surpresa">
       <div id="hero-slides" class="absolute inset-0" aria-live="polite">
-        <img data-carousel-slide src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1000&q=80"
+        <img data-carousel-slide hidden src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1000&q=80"
              alt="Cookies artesanais com gotas de chocolate"
              class="absolute inset-0 h-full w-full object-cover object-center">
-        <img data-carousel-slide data-scare hidden src="assets/reacao-surpresa.jpg"
-             alt="Rapaz de gorro branco com expressão de susto e a mão no peito"
-             width="736" height="772"
-             class="absolute inset-0 h-full w-full object-contain object-center">
+        <figure data-carousel-slide class="sweet-surprise absolute inset-0">
+          <img src="assets/reacao-surpresa.jpg"
+               alt="Rapaz de gorro branco com a mão no peito, em uma reação emocionada de surpresa"
+               width="736" height="772" fetchpriority="high" class="surprise-photo">
+          <span class="surprise-heart" aria-hidden="true">♡</span>
+          <span class="surprise-heart" aria-hidden="true">♡</span>
+          <span class="surprise-heart" aria-hidden="true">♡</span>
+          <figcaption class="surprise-caption">Tem carinho em cada pedacinho.</figcaption>
+        </figure>
       </div>
       <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-gradient-to-t from-cream via-transparent to-transparent lg:bg-gradient-to-r lg:from-cream lg:via-transparent lg:to-transparent"></div>
       <div class="absolute inset-x-0 bottom-6 z-10 flex justify-center gap-3" role="group" aria-label="Escolher imagem">
-        <button type="button" data-carousel-button aria-controls="hero-slides" aria-pressed="true" class="rounded-full border border-cocoa/30 bg-cream px-5 py-3 text-sm text-cocoa">Cookies</button>
-        <button type="button" data-carousel-button aria-controls="hero-slides" aria-pressed="false" class="rounded-full border border-cocoa/30 bg-cream px-5 py-3 text-sm text-cocoa">Surpresa!</button>
+        <button type="button" data-carousel-button aria-controls="hero-slides" aria-pressed="false" class="rounded-full border border-cocoa/30 bg-cream px-5 py-3 text-sm text-cocoa">Cookies</button>
+        <button type="button" data-carousel-button aria-controls="hero-slides" aria-pressed="true" class="rounded-full border border-cocoa/30 bg-cream px-5 py-3 text-sm text-cocoa">Surpresa com carinho</button>
       </div>
     </div>
   </div>
